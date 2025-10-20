@@ -7,7 +7,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    timeout-minutes: 30  # optional: prevent timeout for long builds
+    timeout-minutes: 30  # Prevent CI timeout for long builds
 
     steps:
       - name: Checkout code
@@ -48,5 +48,3 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/nodejs-demo-app:cache
-          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/nodejs-demo-app:cache,mode=max
