@@ -7,6 +7,7 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 30  # optional: prevent timeout for long builds
 
     steps:
       - name: Checkout code
@@ -22,7 +23,7 @@ jobs:
 
       - name: Run tests (skip if none)
         run: |
-          if [ -f package.json ] && (cat package.json | grep -q '"test"'); then
+          if [ -f package.json ] && grep -q '"test"' package.json; then
             npm test
           else
             echo "No tests defined, skipping."
@@ -47,3 +48,5 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/nodejs-demo-app:cache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/nodejs-demo-app:cache,mode=max
