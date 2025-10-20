@@ -1,19 +1,19 @@
-# Use official Node.js image
-FROM node:18
+# Use a smaller Node image
+FROM node:18-slim
 
-# Set working directory inside container
+# Set working directory
 WORKDIR /usr/src/app
 
-# Copy package files
+# Copy only package files first (enables caching)
 COPY package*.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm install --production
 
-# Copy all app files
+# Copy the rest of the app
 COPY . .
 
-# Expose port 3000
+# Expose port
 EXPOSE 3000
 
 # Start the app
